@@ -94,7 +94,6 @@ function cleanCart() {
 };
 
 // Exercise 3
-// Calculate total price of the cart using the "cartList" array
 // Calcula el precio total del carrito usando la matriz "cartList"
 
 function calculateTotal() {
@@ -105,32 +104,36 @@ function calculateTotal() {
 };
 
 // Exercise 4
-// Using the "cartlist" array that contains all the items in the shopping cart, 
-// generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-/*  Usando la matriz "cartlist" que contiene todos los artículos en el carrito de compras,
- generar la matriz "carrito" que no contiene elementos repetidos, sino que cada elemento de esta matriz "carrito" 
+
+/*  Usando la matriz "cartList" que contiene todos los artículos en el carrito de compras,
+ generar el array  "cart" que no contiene elementos repetidos, sino que cada elemento de esta matriz "cart" 
 muestra la cantidad de producto. */
 
 function generateCart() {
-    // Using the "cartlist" array that contains all the items in the shopping cart, 
-    // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
+    /* El bucle esta escuchando Si el usuario añade 1 producto a cartList = [] para poner en marcha la funcion */
     for (let i = 0; i < cartList.length; i++) {
-        //buscar si existe el elemento en cart
+        /*  Buscar si existe el elemento en cart, findIndex() devuelve el índice del primer elemento de un array que cumpla con la función 
+         de prueba proporcionada. En caso contrario iguala a -1 la const foundIndex. */
         const foundIndex = cart.findIndex((cartItem) => {
             return cartList[i].name === cartItem.name
         });
+        /* Si findIndex no encontro coincidencia su valor pasa a ser -1 y ejecutara el bloque if */
         if (foundIndex === -1) {
-            //object.assign sirve para modificar propiedades en el array
+
             const item = Object.assign({}, cartList[i], {
-                quantity: 1
+                quantity: 1,
+                subtotal: cartList[i].price,
             });
-            cart.push(item)
-        } else {
+            cart.push(item) /* Empujamos este item al array cart */
+        }
+        /* De lo contrario */
+        else {
             cart[foundIndex].quantity++;
+            cart[foundIndex].subtotal += cartList[i].price;
         }
     }
     console.log(cart);
-    console.log(cartList);
+    /* console.log(cartList); */
 };
 
 /* cartList.forEach(cartListItem => {
@@ -149,11 +152,44 @@ function generateCart() {
 }); */
 
 // Exercise 5
-function applyPromotionsCart() {
-    // Apply promotions to each item in the array "cart"
+// Aplicar promociones a cada artículo en el array "cart"
 
-    // Aplicar promociones a cada artículo en la matriz "carrito"
-}
+/* Si el usuario compra 3 o más botellas de aceite, el precio del producto desciende a 10 euros.
+Cuando se compran 10 o más productos para la tarta, su precio se rebaja a 2/3. 
+
+En este ejercicio debes completar la función applyPromotionsCart() , que recibe el array cart, modificando el campo subtotalWithDiscount 
+en caso de que se aplique la promoción
+
+Ayuda: dado que producto del cart tiene cantidad, ya puedes validar si tiene descuento:
+
+En caso de que un producto tenga descuento, debe guardarse el precio total con descuento en el campo: subtotalWithDiscount.
+Si no tiene que aplicarse descuento, no hace falta que guardes nada. */
+
+function applyPromotionsCart() {
+    for (let i = 0; i < cart.length; i++) {
+
+        if (cart[i].name === 'cooking oil' && cart[i].quantity >= 3) {
+            cart[i].subtotalWithDiscount = 10 * cart[i].quantity;
+        } else if (cart[i].type === 'grocery' && cart[i].quantity >= 10) {
+            cart[i].subtotalWithDiscount = parseFloat((cart[i].subtotal * 2 / 3).toFixed(2));
+        }
+    }
+    console.log(cart);
+};
+/* for (let i = 0; i < cart.length; i++) {
+
+        if (cart.id[0] >= 3 && cart.name === 'cooking oil') {
+            const itemPromocion = Object.assign({}, cart, {
+                subtotalWithDiscount: 1
+            });
+            if (itemPromocion === 1) {
+                let subtotal = total - 1.5
+            }
+            cart.push(subtotal)
+        }
+    }
+}; */
+
 
 
 // ** Nivell II **
